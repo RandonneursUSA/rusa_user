@@ -1,0 +1,9 @@
+rusa_user:
+  path: '/rusa/user'
+  defaults:
+    _title: 'Create Drupal accounts for RUSA members'
+    _form: '\Drupal\rusa_user\Form\RusaUserForm'
+  requirements:
+    _access: 'TRUE'
+rusa.home:
+  path: '/'

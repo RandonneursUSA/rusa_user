@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Contains rusa_user.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\user\UserInterface;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_help().
+ */
+function rusa_user_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the rusa_imports module.
+    case 'help.page.rusa_imports':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Create Drupal accounts for RUSA members.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_update()
+ *
+ * Auto fill the user dispaly name with first + last
+ *
+ */
+function rusa_user_entity_presave(EntityInterface $entity) {
+
+  if ($entity instanceof UserInterface) {
+    $fields = $entity->getFields(FALSE);
+    if ($fields['field_display_name']->isEmpty()) {
+      $fname = $fields['field_first_name']->getValue();
+      $lname = $fields['field_last_name']->getValue();
+      $display_name = $fname[0]['value'] . ' ' . $lname[0]['value'];
+      $fields['field_display_name']->setValue([$display_name]);
+    }
+  }
+
+}
+
+

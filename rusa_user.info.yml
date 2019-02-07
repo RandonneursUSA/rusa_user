@@ -1,0 +1,6 @@
+name: RUSA User 
+type: module
+description: Create Drupal accounts for RUSA members
+core: 8.x
+package: RUSA
+version: 8.x-0.1.4
