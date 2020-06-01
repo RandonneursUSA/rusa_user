@@ -7,8 +7,11 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\user\UserInterface;
 use Drupal\user\Entity\User;
+use Drupal\rusa_api\RusaMembers;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Implements hook_help().
@@ -46,4 +49,23 @@ function rusa_user_entity_presave(EntityInterface $entity) {
 
 }
 
+/**
+ * Implements hook_user_login()
+ *
+ * Check to make sure RUSA membership is not expired
+ * If it is log the user out and redirect to membership renewal page
+ *
+ */
+ function rusa_user_user_login(UserInterface $account) {
 
+  // Get member id from account
+  $mid = $account->get("field_rusa_member_id")->getString();
+  // Get member data from the RUSa database
+  $memobj  = new RusaMembers(['key' => 'mid', 'val' => $mid]);
+  if ($memobj->isExpired($mid)) {
+    \Drupal::messenger()->addWarning(t('Your RUSA membership is expired. You must renew before you can login here.'));
+    $response =  new RedirectResponse(Url::fromRoute('rusa.membership')->toString());
+    $response->send();
+    user_logout();
+  }
+}

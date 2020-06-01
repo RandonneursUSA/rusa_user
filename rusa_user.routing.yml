@@ -7,3 +7,6 @@ rusa_user:
     _access: 'TRUE'
 rusa.home:
   path: '/'
+rusa.membership:
+  path: '/pages/memberservices'
+
