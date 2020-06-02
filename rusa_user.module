@@ -7,7 +7,9 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Link;
 use Drupal\user\UserInterface;
 use Drupal\user\Entity\User;
 use Drupal\rusa_api\RusaMembers;
@@ -49,23 +51,39 @@ function rusa_user_entity_presave(EntityInterface $entity) {
 
 }
 
-/**
- * Implements hook_user_login()
+
+/* 
+ * Implements hook_form_FORM_ID_alter
  *
- * Check to make sure RUSA membership is not expired
- * If it is log the user out and redirect to membership renewal page
+ * Add a custom login validation to check for expired RUSA membership
+ */
+function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
+  //$form['#validate'][]  = 'Drupal\rusa_user\MemberValidate::check_expired';
+  $form['#validate'][]  = '_rusa_user_user_login_form_validate';
+}
+
+/*
+ * Do the validation here.
+ * Note: maybe move this into a MemberValidate class later
  *
  */
- function rusa_user_user_login(UserInterface $account) {
+function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_state) {
+  $name = $form_state->getValue('name');
+  $account = user_load_by_name($name);
 
   // Get member id from account
   $mid = $account->get("field_rusa_member_id")->getString();
+  
   // Get member data from the RUSa database
   $memobj  = new RusaMembers(['key' => 'mid', 'val' => $mid]);
+  
+  // If membersip is expired set an error on the login form
   if ($memobj->isExpired($mid)) {
-    \Drupal::messenger()->addWarning(t('Your RUSA membership is expired. You must renew before you can login here.'));
-    $response =  new RedirectResponse(Url::fromRoute('rusa.membership')->toString());
-    $response->send();
-    user_logout();
+    $form_state->setErrorByName('name', t('Your RUSA membership is expired. Please renew your membership on the ' .
+      Link::createFromRoute('membership page', 'rusa.membership')
+        ->toString()
+        ->getGeneratedLink()));
   }
 }
+
+
