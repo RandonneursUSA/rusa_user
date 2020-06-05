@@ -4,6 +4,7 @@ namespace Drupal\rusa_user\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger;
 use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
 use Drupal\rusa_api\RusaMembers;
@@ -34,12 +35,12 @@ class RusaUserForm extends FormBase {
       '#markup'  => $this->t("Use this form to create your rusa.org user account.<br /> "  .
                              "Your user account will be used to authenticate you form many RUSA forms, <br />" .
                              "as well as letting you maintain your RUSA profile. <br />" .
-                             "Enter your RUSA member ID and click submit to create your user account."),
+                             "Enter your RUSA # and click submit to create your user account."),
     ];
 
     $form['mid'] = [
       '#type'   => 'textfield',
-      '#title'  => $this->t('RUSA ID'),
+      '#title'  => $this->t('RUSA #'),
     ];
 
     $form['actions'] = [
@@ -62,7 +63,7 @@ class RusaUserForm extends FormBase {
     if (!empty($mid)) {
       // Check to see if user with this ID already exists
       if ($this->checkExisting($mid)) {
-        $form_state->setErrorByName('mid', "A user with RUSA ID " . $mid . " already exists.");
+        $form_state->setErrorByName('mid', "A user with RUSA # " . $mid . " already exists.");
       }
 
       $this->memobj  = new RusaMembers(['key' => 'mid', 'val' => $mid]); 
@@ -70,16 +71,11 @@ class RusaUserForm extends FormBase {
 
       // Check for valid ID
       if (! $this->memobj->isValid($mid)) {
-        $form_state->setErrorByName('mid', $mid . " does not appear to be a valid RUSA member ID.");
+        $form_state->setErrorByName('mid', $mid . " does not appear to be a valid RUSA #.");
       }
       // Check for expired user
       if ($this->memobj->isExpired($mid)) {
-        $form_state->setErrorByName('mid', "Membership for ID " . $mid . " is expired.");
-      }
-
-      // Check for volunteer
-      if (! $this->memobj->isVolunteer($mid)) {
-        $form_state->setErrorByName('mid', "Member with ID " . $mid . " is not currently a volunteer.");
+        $form_state->setErrorByName('mid', "Membership for RUSA # " . $mid . " is expired.");
       }
     }
   }
@@ -95,7 +91,9 @@ class RusaUserForm extends FormBase {
       $member = $this->memobj->getMember($mid);
       $url    = $this->addUser($member);
 
-      drupal_set_message("An email was sent to " . $member->email . " with a one time link to set your new password. "                    .  "<br />" . $url, 'status');
+      $messenger = \Drupal::messenger();
+      $messenger->addMessage(t("An email was sent to " . $member->email . " with a one time link to set your new password. " .   
+      "<br />" . $url), $messenger::TYPE_STATUS);
 
     }
   }

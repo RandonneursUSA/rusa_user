@@ -1,6 +1,6 @@
 name: RUSA User 
 type: module
 description: Create Drupal accounts for RUSA members
-core: 8.x
+core_version_requirement: ^8 || ^9
 package: RUSA
-version: 8.x-0.2.1
+version: 8.x-0.3.1
