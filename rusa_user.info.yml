@@ -5,7 +5,7 @@ core_version_requirement: ^8 || ^9
 package: RUSA
 version: 8.x-1.0.0
 dependencies:
-    - field_based_login:field_based_login
+    - fbl:fbl
     - pathauto:pathauto
     - rusa_api:rusa_api
 
