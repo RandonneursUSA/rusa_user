@@ -1,0 +1,3 @@
+administer rusa user:
+  title: 'Administer rusa user settings'
+  restrict access: true

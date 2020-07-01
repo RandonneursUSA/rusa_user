@@ -1,0 +1,45 @@
+<?php
+
+use Drupal\user\Entity\User;
+use Drupal\rusa_api\RusaMembers;
+
+/**
+ * Update to add birthdate to members
+ *
+ */
+function rusa_user_update_8008() {
+
+    //Get existing users with rusa_member role
+    $ids = \Drupal::entityQuery('user')
+        ->condition('status', 1)
+        ->condition('roles', 'rusa_member')
+        ->execute();
+    $users = User::loadMultiple($ids);
+
+    // Instantiate our members class to get data from GDBM
+    $memobj = new RusaMembers(); 
+
+    $output = 'Start: ';
+    //Loop through users and check or set birtdate
+    foreach ($users as $user) {
+
+        // Check to see if birthdate is set
+        if (! $user->get('field_date_of_birth')[0]->value) {
+
+            // Get RUSA # from user
+            $mid = $user->get('field_rusa_member_id')[0]->value;
+
+            // Get birthdate from GDBM
+            $member = $memobj->getMember($mid);
+            $dob = str_replace('/', '-', $member->birthdate);
+
+            // Set birtdate
+            $user->set('field_date_of_birth', $dob);
+            $user->save();
+            $output .= $mid . ', '; 
+        }
+    }
+        
+    return $output;
+}
+

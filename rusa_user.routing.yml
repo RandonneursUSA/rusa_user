@@ -1,10 +1,28 @@
 rusa_user:
   path: '/rusa/user'
   defaults:
-    _title: 'Create Drupal accounts for RUSA members'
+    _title: 'Create website accounts for RUSA members'
     _form: '\Drupal\rusa_user\Form\RusaUserForm'
   requirements:
     _access: 'TRUE'
+
+rusa_user.get_user:
+  path: '/rusa/user/current-user'
+  defaults:
+    _title: 'Get the currernt logged in user'
+    _controller: '\Drupal\rusa_user\Controller\RusaUserController::getCurrentUser'
+  requirements:
+    _access: 'TRUE'
+
+rusa_user.configuration:
+  path: '/admin/config/people/rusa'
+  defaults:
+    _title: 'RUSA User Configuration'
+    _form: '\Drupal\rusa_user\Form\RusaUserSettingsForm'
+  requirements:
+    _permission: 'administer rusa user'
+
+
 rusa.home:
   path: '/'
 rusa.membership:

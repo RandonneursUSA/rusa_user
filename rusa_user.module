@@ -87,3 +87,25 @@ function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_st
 }
 
 
+/**
+ * hook_mail
+ *
+ * Provides the template for email notifications
+ *
+ */
+function rusa_user_mail($key, &$message, $params) {
+
+    // Will figure out how to use and replace tokens in messages
+    $token_service = \Drupal::token();
+
+    $body  = $params['message'] . "\n\n" . $params['url'] ;
+    $message['subject'] = $params['subj'];
+    $message['body'][]  = Drupal\Core\Mail\MailFormatHelper::htmlToText($body);
+}
+
+
+
+
+
+
+

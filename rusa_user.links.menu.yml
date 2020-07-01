@@ -1,0 +1,5 @@
+rusa_user.configuration:
+  route_name: rusa_user.configuration
+  title: 'RUSA User'
+  description: 'RUSA User Configuration'
+  parent: user.admin_index
