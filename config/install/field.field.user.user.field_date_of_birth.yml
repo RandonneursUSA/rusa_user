@@ -1,0 +1,21 @@
+uuid: 7baf709c-19fe-4f9e-9cee-7537150d0571
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_date_of_birth
+  module:
+    - datetime
+    - user
+id: user.user.field_date_of_birth
+field_name: field_date_of_birth
+entity_type: user
+bundle: user
+label: 'Date of birth'
+description: 'From RUSA members database. Needed for Perm ride registration. Won''t be displayed.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,10 @@
+field_based_login:
+  field: field_rusa_member_id
+  allow_user_name: 1
+  allow_user_email: 1
+  label: ''
+  field_desc: ''
+actions: null
+form_build_id: form-aK5rqu_jaAdxF-0WZJV_PaODeQ6raLyC2mceRLwklSQ
+form_token: oYRlGySrf3RJ-0v2Ip6Bso-M9y1eIXP9Ixh6NehpdCE
+form_id: _fbl_configuration

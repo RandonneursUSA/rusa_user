@@ -1,0 +1,24 @@
+uuid: e2a96e83-43df-4925-8b04-c72b366f27bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_rusa_member_id
+  module:
+    - user
+id: user.user.field_rusa_member_id
+field_name: field_rusa_member_id
+entity_type: user
+bundle: user
+label: 'RUSA #'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

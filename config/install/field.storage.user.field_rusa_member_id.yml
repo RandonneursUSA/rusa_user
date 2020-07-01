@@ -1,0 +1,20 @@
+uuid: 2dd53bf9-fd91-4ec5-b9ec-2435c62ed168
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_rusa_member_id
+field_name: field_rusa_member_id
+entity_type: user
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

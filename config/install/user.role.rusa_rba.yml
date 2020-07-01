@@ -1,0 +1,9 @@
+uuid: 4e7ade80-4df3-4f29-a17c-54ff00276789
+langcode: en
+status: true
+dependencies: {  }
+id: rusa_rba
+label: 'RUSA RBA'
+weight: 7
+is_admin: null
+permissions: {  }

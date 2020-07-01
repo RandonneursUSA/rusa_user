@@ -3,4 +3,9 @@ type: module
 description: Create Drupal accounts for RUSA members
 core_version_requirement: ^8 || ^9
 package: RUSA
-version: 8.x-0.4.0
+version: 8.x-1.0.0
+dependencies:
+    - field_based_login:field_based_login
+    - pathauto:pathauto
+    - rusa_api:rusa_api
+
