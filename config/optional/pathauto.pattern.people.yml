@@ -1,0 +1,14 @@
+uuid: 4131f77d-9d1d-4882-bdb6-8e2db41fe259
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: people
+label: People
+type: 'canonical_entities:user'
+pattern: 'members/[user:display-name]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }
