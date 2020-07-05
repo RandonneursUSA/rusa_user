@@ -72,6 +72,8 @@ class RusaUserForm extends ConfirmFormBase {
     
         // If we're at the confirmation step just pass it on
         if ($this->step === 2) {
+            // but first attach our CSS to hide the local task tabs
+            $form['#attached']['library'][] = 'rusa_user/rusa_user_style';
             return parent::buildForm($form, $form_state);
         }
         
