@@ -156,7 +156,8 @@ class RusaUserForm extends ConfirmFormBase {
         $url   = $this->addUser();
         
 
-        $to = 'rusa'; // $email Will be member's email
+        // Send email notification
+        $to = $email;
         
         $params = [ 
             'from'    => $this->settings['acctmgr'],  
