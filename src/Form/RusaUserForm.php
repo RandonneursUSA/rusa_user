@@ -52,8 +52,12 @@ class RusaUserForm extends ConfirmFormBase {
     */
     public function getQuestion() {
         $name = $this->member->fname . ' ' . $this->member->sname;
-        
-        return $this->t("Are you %name?", ['%name' => $name]);        
+        $mid  = $this->member->mid;
+
+        return $this->t("Are you %name with RUSA # %mid?", [
+                '%name' => $name,
+                '%mid'  => $mid,
+            ]);
     }
     
     /**
@@ -229,12 +233,12 @@ class RusaUserForm extends ConfirmFormBase {
      
         $storage = \Drupal::service('entity_type.manager')->getStorage('node');
         $query   = $storage->getQuery()
-            -condition('type', 'club')
-            -condition('field_club_acpcode', $acpcode);
+            ->condition('type', 'club')
+            ->condition('field_club_acpcode', $acpcode);
         $result  = $query->execute();
      
         if ($result) {
-            return $result->id();
+            return $result;
         }
      }
 
