@@ -1,0 +1,16 @@
+/* Fix page titile */
+
+h1.page-title {
+    font-size: 2em !important;
+}
+
+.page-title .placeholder {
+    font-style: normal;
+}
+
+
+/* Hide tabs on user register confirm */
+#block-rusa-local-tasks  {
+    display: none;
+} 
+
