@@ -32,13 +32,21 @@ class RusaUserSettingsForm extends ConfigFormBase {
     public function buildForm(array $form, FormStateInterface $form_state) {
 
 		$config = $this->config('rusa_user.settings');
+		
+		// Build the form
+        $form['rusa'] = [
+            '#type'        => 'vertical_tabs',
+            '#default_tab' => 'settings',
+        ];
 
         $form['settings'] = [
-            '#markup' => $this->t('Settings form for RUSA User accounts.'),
+            '#type'   => 'details',
+            '#title'  => $this->t('Settings'),
+            '#group'  => 'rusa',
         ];
         
         // RUSA account manager
-        $form['acctmgr'] = [
+        $form['settings']['acctmgr'] = [
             '#type'          => 'textfield',
             '#title'         => $this->t("Account manager email"),
             '#description'   => $this->t("Enter an email address for the account manager."),
@@ -46,9 +54,14 @@ class RusaUserSettingsForm extends ConfigFormBase {
             '#default_value' => $config->get('acctmgr'),
         ];
         
-
+        $form['messages'] = [
+            '#type'   => 'details',
+            '#title'  => $this->t('Messages'),
+            '#group'  => 'rusa',
+        ];
+        
         // Instructions for the top of the form
-        $form['instructions'] = [
+        $form['messages']['instructions'] = [
             '#type'          => 'textarea',
             '#title'         => $this->t('Instructions'),
             '#description'   => $this->t('This is the text that appears on the form for creating website accounts.'),
@@ -58,7 +71,7 @@ class RusaUserSettingsForm extends ConfigFormBase {
         ];
 
         // Email notification
-        $form['notify'] = [
+        $form['messages']['notify'] = [
             '#type'          => 'textarea',
             '#title'         => $this->t('Notification email message'),
             '#description'   => $this->t('This is the email message that people recive with the link to change their password'),
@@ -68,7 +81,7 @@ class RusaUserSettingsForm extends ConfigFormBase {
         ];
 
         // Status message
-        $form['message'] = [
+        $form['messages']['message'] = [
             '#type'          => 'textarea',
             '#title'         => $this->t('Status message'),
             '#description'   => $this->t('This is the message displays in the status area when the account is created'),
