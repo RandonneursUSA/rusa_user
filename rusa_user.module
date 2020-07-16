@@ -70,20 +70,22 @@ function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_s
 function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_state) {
   $name = $form_state->getValue('name');
   $account = user_load_by_name($name);
+    if (!empty($account)) {
 
-  // Get member id from account
-  $mid = $account->get("field_rusa_member_id")->getString();
-  
-  // Get member data from the RUSa database
-  $memobj  = new RusaMembers(['key' => 'mid', 'val' => $mid]);
-  
-  // If membersip is expired set an error on the login form
-  if ($memobj->isExpired($mid)) {
-    $form_state->setErrorByName('name', t('Your RUSA membership is expired. Please renew your membership on the ' .
-      Link::createFromRoute('membership page', 'rusa.membership')
-        ->toString()
-        ->getGeneratedLink()));
-  }
+        // Get member id from account
+        $mid = $account->get("field_rusa_member_id")->getString();
+
+        // Get member data from the RUSa database
+        $memobj  = new RusaMembers(['key' => 'mid', 'val' => $mid]);
+
+        // If membersip is expired set an error on the login form
+        if ($memobj->isExpired($mid)) {
+        $form_state->setErrorByName('name', t('Your RUSA membership is expired. Please renew your membership on the ' .
+          Link::createFromRoute('membership page', 'rusa.membership')
+            ->toString()
+            ->getGeneratedLink()));
+        }
+    }
 }
 
 
