@@ -105,7 +105,14 @@ function rusa_user_mail($key, &$message, $params) {
     $message['body'][]  = Drupal\Core\Mail\MailFormatHelper::htmlToText($body);
 }
 
-
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Point to our menu plugin to change the log in link text
+ */
+function rusa_user_menu_links_discovered_alter(&$links) {
+    $links['user.logout']['class'] = 'Drupal\rusa_user\Plugin\Menu\RusaAccountMenu';
+}
 
 
 
