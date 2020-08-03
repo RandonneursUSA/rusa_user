@@ -1,6 +1,5 @@
 {
   "name": "rusa/rusa_user",
   "type": "drupal-custom-module",
-  "version": "0.3.0",
-  "description": "Drupal module for RUSA"
+  "description": "Drupal user module for RUSA"
 }
