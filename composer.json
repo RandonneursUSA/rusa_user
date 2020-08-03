@@ -1,5 +1,6 @@
 {
   "name": "rusa/rusa_user",
-  "type": "drupal-custom-module",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
   "description": "Drupal user module for RUSA"
 }
