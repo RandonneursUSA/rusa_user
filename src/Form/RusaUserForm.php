@@ -189,7 +189,8 @@ class RusaUserForm extends ConfirmFormBase {
     }
 
     private function addUser() {
-    
+        // @To-do: tie breaker algorythm for name conflicts
+        
         $udata = $this->member;
         
         // Create the user
