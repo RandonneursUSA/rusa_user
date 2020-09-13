@@ -56,7 +56,7 @@ class RusaUserManager {
                 // Update email address
                 $user->setEmail($mdata->email);
                 $user->save();
-                $this->logger->notice('Updated email for %user', [%user => $uid]);
+                $this->logger->notice('Updated email for %user', ['%user' => $uid]);
             }
         }
     }
