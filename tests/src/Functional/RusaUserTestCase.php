@@ -38,10 +38,16 @@ class RusaUserTestCase extends BrowserTestBase {
 
 
     /**
-     * Make sure everything works to this point.
+     * Make sure the site still works. For now just check the front page.
      */
     public function testTheSiteStillWorks() {
-        // Not doing anything right now, save it for later.
-    }
+        // Load the front page.
+        $this->drupalGet('<front>');
 
+        // Confirm that the site didn't throw a server error or something else.
+        $this->assertSession()->statusCodeEquals(200);
+
+        // Confirm that the front page contains the standard text.
+        $this->assertText('Welcome to Drupal');
+    }
 }
