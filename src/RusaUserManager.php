@@ -47,7 +47,7 @@ class RusaUserManager {
         // Step though each user
         foreach ($uids as $uid) {
             $user   = $this->users->load($uid);
-            $mid    = $user->get('field_rusa_member_id')->value();
+            $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
             $email  = $user->getEmail();
             $mdata  = $this->members->getMember($mid);
             
