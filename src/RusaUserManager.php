@@ -15,14 +15,18 @@ namespace drupal\rusa_user;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\user\Entity\User;
 use Drupal\rusa_api\RusaMembers;
+use Psr\Log\LoggerInterface;
+
 
 class RusaUserManager {
     protected $users;
     protected $members;
+    protected $logger;
     
-    public function __construct() {
+    public function __construct(LoggerInterface $logger) {
         $this->users   = \Drupal::entityTypeManager()->getStorage('user');
         $this->members = new RusaMembers(); // This will load all members. Maybe too slow.
+        $this->logger = $logger;
     }
     
     /**
@@ -33,6 +37,7 @@ class RusaUserManager {
      * @todo add or remove roles based on volunteer data
      */
     public function syncMemberData() {
+        $this->logger->notice('Entered syncMemberData');
         $query = $this->users->getQuery();
         $uids = $query
             ->condition('status', '1')
@@ -51,6 +56,7 @@ class RusaUserManager {
                 // Update email address
                 $user->setEmail($mdata->email);
                 $user->save();
+                $this->logger->notice('Updated email for %user', [%user => $uid]);
             }
         }
     }

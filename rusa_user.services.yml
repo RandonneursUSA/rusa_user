@@ -5,6 +5,10 @@ services:
       - {name: event_subscriber }
   manager:
     class: Drupal\rusa_user\RusaUserManager
+    arguments: ['@logger.channel.rusa_user']
     tags:
       - {name: rusa_user.manager }
+  logger.channel.rusa_user:
+    parent: logger.channel_base
+    arguments: ['rusa_user']
       
