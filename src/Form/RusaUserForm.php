@@ -192,15 +192,37 @@ class RusaUserForm extends ConfirmFormBase {
         // @To-do: tie breaker algorythm for name conflicts
         
         $udata = $this->member;
+        $uname = $udata->fname . " " . $udata->sname;
         
         // Create the user
         $user = User::create();
 
-        //Required settings
+        // Required settings
         $user->setPassword('ReallyB0gusPa$$W0rd');
         $user->enforceIsNew();
         $user->setEmail($udata->email);
-        $user->setUsername($udata->fname . " " . $udata->sname );
+        $user->setUsername($uname);
+        
+        // Validate username and email
+        $tie = 1;
+        do {
+            $violations = $user->validate();
+            foreach ($violations as $violation) {
+                switch ($violation->getPropertyPath()) {
+                    case 'name':
+                        // Use middle name if it exists
+                        $mname = empty($udata->mname) ? $tie++ : $udata->mname;
+                        $user->setUsername($udata->fname . " " . $mname . " " . $udata->sname);
+                        break;
+
+                    case 'mail':
+                        // Use Plus addressing
+                        $mailparts = explode('@', $udata->email);
+                        $user->setEmail($mailparts[0] . '+' . $udata->mid . '@' . $mailparts[1] );
+                        break;
+                }
+            }
+        } while ($violations->count() > 0);
 
         // Custom fields
         $user->set('field_first_name',     $udata->fname);

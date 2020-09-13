@@ -3,3 +3,8 @@ services:
     class: Drupal\rusa_user\Routing\RouteSubscriber
     tags:
       - {name: event_subscriber }
+  manager:
+    class: Drupal\rusa_user\RusaUserManager
+    tags:
+      - {name: rusa_user.manager }
+      

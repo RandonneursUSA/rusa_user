@@ -115,6 +115,13 @@ function rusa_user_menu_links_discovered_alter(&$links) {
 }
 
 
-
+/**
+ * Implements hook_cron
+ *
+ * Update users email from members database
+ */
+function rusa_user_cron() {
+     \Drupal::service('rusa_user.manager')->syncMemberData();
+}
 
 
