@@ -51,12 +51,15 @@ class RusaUserManager {
             $email  = $user->getEmail();
             $mdata  = $this->members->getMember($mid);
             
-            // Check to see if email is different
-            if ($email !== $mdata->email) {
-                // Update email address
-                $user->setEmail($mdata->email);
-                $user->save();
-                $this->logger->notice('Updated email for %user', ['%user' => $uid]);
+            // Skip if we're using Plus addressing
+            if (! strpos($email, '+')) {
+                // Check to see if email is different
+                if ($email !== $mdata->email) {
+                    // Update email address
+                    $user->setEmail($mdata->email);
+                    $user->save();
+                    $this->logger->notice('Updated email for %user', ['%user' => $uid]);
+                }
             }
         }
     }
