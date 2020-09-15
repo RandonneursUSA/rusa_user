@@ -22,9 +22,13 @@ rusa_user.configuration:
   requirements:
     _permission: 'administer rusa user'
 
-
 rusa.home:
   path: '/'
+  requirements:
+    _access: 'TRUE'
+    
 rusa.membership:
   path: '/pages/memberservices'
+  requirements:
+    _access: 'TRUE'
 
