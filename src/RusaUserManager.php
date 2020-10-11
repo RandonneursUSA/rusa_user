@@ -62,6 +62,7 @@ class RusaUserManager {
                 }
             }
             // Set membership expiration date
+            $this->logger->notice('Setting expiration date for %user to %edate', ['%user' => $uid, '%edate' => $mdata->expdate]);
             $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
         }
     }
