@@ -61,6 +61,8 @@ class RusaUserManager {
                     $this->logger->notice('Updated email for %user', ['%user' => $uid]);
                 }
             }
+            // Set membership expiration date
+            $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
         }
     }
 }    
