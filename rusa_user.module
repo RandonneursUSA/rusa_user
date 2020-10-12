@@ -85,6 +85,14 @@ function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_st
             ->toString()
             ->getGeneratedLink()));
         }
+        // Check to see if membership will expire soon
+        else {
+            $mdata = $memobj->getMember($mid);
+            $expdate = $mdata->expdate;
+            if (strtotime($expdate) < strtotime("+2 month") ) {
+                \Drupal::Messenger()->addWarning(t('Your RUSA membership will expire on %exp', ['%exp' => $expdate]));
+            }
+        }               
     }
 }
 
