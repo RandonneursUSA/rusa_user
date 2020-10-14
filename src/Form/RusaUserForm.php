@@ -132,11 +132,17 @@ class RusaUserForm extends ConfirmFormBase {
             if (! $memobj->isValid($mid)) {
                 $form_state->setErrorByName('mid', $mid . " does not appear to be a valid RUSA #.");
             }
+            
             // Check for expired user
             if ($memobj->isExpired($mid)) {
                 $form_state->setErrorByName('mid', "Membership for RUSA # " . $mid . " is expired.");
             }
             
+            // Make sure email exists
+            if (! $memobj->hasEmail($mid) {
+                  $form_state->setErrorByName('mid', "Member RUSA # " . $mid . " does not have an email address. Please update your member data with a valid email address.");
+            }
+          
             // Member data is good so save it
             $this->member = $memobj->getMember($mid);
         }
@@ -189,7 +195,6 @@ class RusaUserForm extends ConfirmFormBase {
     }
 
     private function addUser() {
-        // @To-do: tie breaker algorythm for name conflicts
         
         $udata = $this->member;
         $uname = $udata->fname . " " . $udata->sname;
