@@ -139,7 +139,7 @@ class RusaUserForm extends ConfirmFormBase {
             }
             
             // Make sure email exists
-            if (! $memobj->hasEmail($mid) {
+            if (! $memobj->hasEmail($mid)) {
                   $form_state->setErrorByName('mid', "Member RUSA # " . $mid . " does not have an email address. Please update your member data with a valid email address.");
             }
           
