@@ -197,6 +197,13 @@ class RusaUserForm extends ConfirmFormBase {
     private function addUser() {
         
         $udata = $this->member;
+        
+        // Drupal will croak if the username has 2 spaces
+        // So we have to trim trialing spaces from the names
+        $udata->fname = rtrim($udata->fname);
+        $udata->sname = rtrim($udata->sname);
+        
+        // Concatenate first and last for username
         $uname = $udata->fname . " " . $udata->sname;
         
         // Create the user
