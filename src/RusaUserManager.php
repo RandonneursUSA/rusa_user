@@ -32,41 +32,55 @@ class RusaUserManager {
     /**
      * Sync data from the members database
      *
-     * For now we'll just sync the email
+     * For now we'll just sync the email and expiration date
      *
      * @todo add or remove roles based on volunteer data
      */
-    public function syncMemberData() {
-        $this->logger->notice('Entered syncMemberData');
-        $query = $this->users->getQuery();
-        $uids = $query
-            ->condition('status', '1')
-            ->condition('roles', 'rusa_member')
-            ->execute();
+    public function syncMemberData($uid) {
+        if (empty($uid)) {
+            $this->logger->notice('Entered syncMemberData');
+            $query = $this->users->getQuery();
+            $uids = $query
+                ->condition('status', '1')
+                ->condition('roles', 'rusa_member')
+                ->execute();
         
-        // Step though each user
-        foreach ($uids as $uid) {
-            $user   = $this->users->load($uid);
-            $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
-            $email  = $user->getEmail();
-            $mdata  = $this->members->getMember($mid);
-            
-            // Skip if we're using Plus addressing
-            if (! strpos($email, '+')) {
-                // Check to see if email is different
-                if ($email !== $mdata->email) {
-                    // Update email address
-                    $user->setEmail($mdata->email);
-                    $user->save();
-                    $this->logger->notice('Updated email for %user', ['%user' => $uid]);
-                }
+            // Step though each user
+            foreach ($uids as $uid) {
+                $this->syncData($uid);
             }
-            // Set membership expiration date
-            $this->logger->notice('Setting expiration date for %user to %edate', ['%user' => $uid, '%edate' => $mdata->expdate]);
-            $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
-            $user->save();
+        }
+        else {
+            $this->syncData($uid);
         }
     }
+    
+    /**
+     * Do the actual sync here
+     *
+     */
+    protected function syncData($uid) {
+        $user   = $this->users->load($uid);
+        $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
+        $email  = $user->getEmail();
+        $mdata  = $this->members->getMember($mid);
+        
+        // Skip if we're using Plus addressing
+        if (! strpos($email, '+')) {
+            // Check to see if email is different
+            if ($email !== $mdata->email) {
+                // Update email address
+                $user->setEmail($mdata->email);
+                $user->save();
+                $this->logger->notice('Updated email for %user', ['%user' => $uid]);
+            }
+        }
+        // Set membership expiration date
+        $this->logger->notice('Setting expiration date for %user to %edate', ['%user' => $uid, '%edate' => $mdata->expdate]);
+        $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
+        $user->save();
+    }
+    
 }    
             
 
