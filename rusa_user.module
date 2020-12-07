@@ -94,7 +94,7 @@ function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_st
             }
         }
         // Sync member data from GDBM
-        \Drupal::service('rusa_user.manager')->syncMemberData($accout->id());
+        \Drupal::service('rusa_user.manager')->syncMemberData($account->id());
     }
 }
 
