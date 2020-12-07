@@ -29,6 +29,38 @@ class RusaUserManager {
         $this->logger = $logger;
     }
     
+    
+    /**
+     * Check membership expiration at login
+     *
+     */
+    public function checkExpired($name) {
+        $account = $this->users->loadByName($name);
+        if (!empty($account)) {
+
+            // Get member id from account
+            $mid = $account->get("field_rusa_member_id")->getString();
+           
+            // If membersip is expired set an error on the login form
+            if ($this->members->isExpired($mid)) {
+            $form_state->setErrorByName('name', t('Your RUSA membership is expired. Please renew your membership on the ' .
+              Link::createFromRoute('membership page', 'rusa.membership')
+                ->toString()
+                ->getGeneratedLink()));
+            }
+            // Check to see if membership will expire soon
+            else {
+                $mdata = $this->members->getMember($mid);
+                $expdate = $mdata->expdate;
+                if (strtotime($expdate) < strtotime("+2 month") ) {
+                    \Drupal::Messenger()->addWarning(t('Your RUSA membership will expire on %exp', ['%exp' => $expdate]));
+                }
+            }
+       
+        }
+    }
+    
+    
     /**
      * Sync data from the members database
      *
