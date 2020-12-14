@@ -68,7 +68,7 @@ class RusaUserManager {
      *
      * @todo add or remove roles based on volunteer data
      */
-    public function syncMemberData($uid) {
+    public function syncMemberData($uid = NULL) {
         if (empty($uid)) {
             $this->logger->notice('Entered syncMemberData');
             $query = $this->users->getQuery();
