@@ -60,7 +60,7 @@ function rusa_user_entity_presave(EntityInterface $entity) {
 function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
     //$form['#validate'][]  = 'Drupal\rusa_user\MemberValidate::check_expired';
     // $form['#validate'][]  = '_rusa_user_user_login_form_validate';
-    \Drupal::service('rusa_user.manager')->checkExpired($form_state->getValue('name'));
+    // \Drupal::service('rusa_user.manager')->checkExpired($form_state->getValue('name'));
 }
 
 /**

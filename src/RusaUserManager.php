@@ -35,7 +35,7 @@ class RusaUserManager {
      *
      */
     public function checkExpired($name) {
-        $account = $this->users->loadByName($name);
+        $account = $this->users->loadByProperties(['name' => $name]);
         if (!empty($account)) {
 
             // Get member id from account
