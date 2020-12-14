@@ -67,7 +67,7 @@ function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_s
  * Sync user data at login
  *
  */
-function rusa_user_user_login(AccountInterface $account) { 
+function rusa_user_user_login($account) { 
     // Sync member data from GDBM
     \Drupal::service('rusa_user.manager')->syncMemberData($account->id());
 }
