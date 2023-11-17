@@ -13,6 +13,7 @@ function rusa_user_update_8008() {
     $ids = \Drupal::entityQuery('user')
         ->condition('status', 1)
         ->condition('roles', 'rusa_member')
+        ->accessCheck(TRUE)
         ->execute();
     $users = User::loadMultiple($ids);
 

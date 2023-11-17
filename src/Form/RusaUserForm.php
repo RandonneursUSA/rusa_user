@@ -190,6 +190,7 @@ class RusaUserForm extends ConfirmFormBase {
         // Check to see if use with this RUSA ID already exists
         $uids = \Drupal::entityQuery('user')
             ->condition("field_rusa_member_id", $mid, "=")
+            ->accessCheck(TRUE)
             ->execute();
         return $uids;
     }
