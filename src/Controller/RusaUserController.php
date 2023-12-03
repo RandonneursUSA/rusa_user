@@ -89,7 +89,7 @@ class RusaUserController  extends ControllerBase {
 			->condition('field_rusa_member_id', $mid)
 			->accessCheck(FALSE)
 			->execute();
-		return $uids[0];
+		return $uids;
 	}
 
 } //EoC
