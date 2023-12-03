@@ -13,6 +13,15 @@ rusa_user.get_user:
     _controller: '\Drupal\rusa_user\Controller\RusaUserController::getCurrentUser'
   requirements:
     _access: 'TRUE'
+    
+rusa_user.sync_member:
+  path: '/rusa/user/sync-member/{mid}'
+  defaults:
+    _title: 'Sync member data'
+    _controller: '\Drupal\rusa_user\Controller\RusaUserController::syncMember'
+  requirements:
+    _access: 'TRUE'    
+    mid: \d+
 
 rusa_user.configuration:
   path: '/admin/config/people/rusa'

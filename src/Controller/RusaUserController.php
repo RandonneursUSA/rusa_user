@@ -54,5 +54,30 @@ class RusaUserController  extends ControllerBase {
             'method' => 'GET',
         ]);
 	}
+	
+	/**
+	 * Sync member data from GDBM for 1 user
+	 * Designed to be run from Perl when member data is updated
+	 **/
+	public function syncMember($mid){
+		if (! empty($mid)) { 
+			/* first we must get the user id given the member id */
+			$uid = $this->getUser($mid);
+			/* Then we can do the sync */
+			\Drupal::service('rusa_user.manager')->syncMemberData($uid);
+		}
+	}
+	
+	/**
+	 * Return Drupal used Id given RUSA member Id
+	 **/
+	protected function getUser($mid) {
+	 	$this->logger->notice('Sync member data for RUSA #' . $mid);
+		$query = $this->users->getQuery();
+		$uids = $query
+			->condition('field_rusa_member_id', $mid)
+			->execute();
+		return $uids[0];
+	}
 
 } //EoC
