@@ -29,7 +29,7 @@ class RusaUserController  extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(AccountProxy $currentUser {
+  public function __construct(AccountProxy $currentUser) {
       $this->currentUser = $currentUser;
       $this->logger = $this->getLogger('rusa_user');
   } 
