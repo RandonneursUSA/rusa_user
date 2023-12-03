@@ -68,7 +68,7 @@ class RusaUserController  extends ControllerBase {
 	public function syncMember($mid){
 		if (! empty($mid)) { 
 			/* first we must get the user id given the member id */
-			$uid = $this->getUser($mid);
+			$uids = $this->getUser($mid);
 			/* Then we can do the sync */
 			foreach ($uids as $uid) {
 				$this->logger->notice('Sync member data for user #' . $uid);
