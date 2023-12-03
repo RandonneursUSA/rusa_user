@@ -68,11 +68,9 @@ class RusaUserController  extends ControllerBase {
 	public function syncMember($mid){
 		if (! empty($mid)) { 
 			/* first we must get the user id given the member id */
-			$uids = $this->getUser($mid);
-			/* Then we can do the sync */
-			foreach ($uids as $uid) {
-				$this->logger->notice('Sync member data for user #' . $uid);
-			}
+			$uid = $this->getUser($mid);
+			$this->logger->notice('Sync member data for user #' . $uid);
+			
 			/* \Drupal::service('rusa_user.manager')->syncMemberData($uid); */
 		}
 		return new JsonResponse([
@@ -91,7 +89,7 @@ class RusaUserController  extends ControllerBase {
 			->condition('field_rusa_member_id', $mid)
 			->accessCheck(FALSE)
 			->execute();
-		return $uids;
+		return $uids[1];
 	}
 
 } //EoC
