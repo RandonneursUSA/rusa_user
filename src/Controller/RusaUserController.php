@@ -70,10 +70,11 @@ class RusaUserController  extends ControllerBase {
 			/* first we must get the user id given the member id */
 			$uid = $this->getUser($mid);
 			/* Then we can do the sync */
-			\Drupal::service('rusa_user.manager')->syncMemberData($uid);
+			$this->logger->notice('Sync member data for user #' . $uid);
+			/* \Drupal::service('rusa_user.manager')->syncMemberData($uid); */
 		}
 		return new JsonResponse([
-            'data' => ['uid' => $uid, 'mid' => $mid],
+            'data' => ['status' => 1],
             'method' => 'GET',
         ]);
 	}
