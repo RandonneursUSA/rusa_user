@@ -15,6 +15,7 @@ use Drupal\Core\Session\AccountProxy;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Log\LoggerInterface;
 
 /**
  * Rusa User Controller
@@ -23,12 +24,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class RusaUserController  extends ControllerBase {
 
     protected $currentUser;
+    protected $logger;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(AccountProxy $currentUser) {
+  public function __construct(AccountProxy $currentUser, 
+                              LoggerInterface $logger) {
       $this->currentUser = $currentUser;
+      $this->logger = $logger;
   } 
 
 	/**
