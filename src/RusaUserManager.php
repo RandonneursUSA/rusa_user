@@ -44,6 +44,7 @@ class RusaUserManager {
             $uids = $query
                 ->condition('status', '1')
                 ->condition('roles', 'rusa_member')
+                ->accessCheck(FALSE)
                 ->execute();
         
             // Step though each user

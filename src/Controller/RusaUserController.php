@@ -82,6 +82,7 @@ class RusaUserController  extends ControllerBase {
 		$query = $this->users->getQuery();
 		$uids = $query
 			->condition('field_rusa_member_id', $mid)
+			->accessCheck(FALSE)
 			->execute();
 		return $uids[0];
 	}
