@@ -14,7 +14,7 @@ class RusaUserTestCase extends BrowserTestBase {
     /**
      * {@inheritdoc}
      */
-    public static $modules = [
+    protected static $modules = [
         // Modules for core functionality.
         'node',
         'views',
@@ -48,6 +48,6 @@ class RusaUserTestCase extends BrowserTestBase {
         $this->assertSession()->statusCodeEquals(200);
 
         // Confirm that the front page contains the standard text.
-        $this->assertText('Welcome to Drupal');
+        $this->assertSession()->pageTextContains('Welcome to Drupal');
     }
 }

@@ -270,6 +270,7 @@ class RusaUserForm extends ConfirmFormBase {
      
         $storage = \Drupal::service('entity_type.manager')->getStorage('node');
         $query   = $storage->getQuery()
+        	->accessCheck(TRUE)
             ->condition('type', 'club')
             ->condition('field_club_acpcode', $acpcode);
         $result  = $query->execute();
