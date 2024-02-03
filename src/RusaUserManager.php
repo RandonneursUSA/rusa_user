@@ -79,9 +79,43 @@ class RusaUserManager {
         // Set membership expiration date
         $this->logger->notice('Setting expiration date for %user to %edate', ['%user' => $uid, '%edate' => $mdata->expdate]);
         $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
+        
+        $syncMe = $this->getSyncList();
+        if(in_array($mid, $syncMe, false)){
+            $this->logger->notice('Performing detailed sync for Rusa#  %user', ['%user' => $mid]);
+            $user->set('field_first_name',     $mdata->fname);
+            $user->set('field_last_name',      $mdata->sname);
+            $user->set('field_date_of_birth',  str_replace('/', '-', $mdata->birthdate));
+	    $fname = rtrim($mdata->fname);
+	    $lname = rtrim($mdata->sname);
+	    $user->setUsername($fname . " " . $lname);
+	    $tie = 1;
+	    //do {
+            //    $violations = $user->validate();
+            //    foreach ($violations as $violation) {
+            //        switch ($violation->getPropertyPath()) {
+            //            case 'name':
+            //                // Use middle name if it exists
+            //                $mname = empty($udata->mname) ? $tie++ : rtrim($mdata->mname);
+            //                $user->setUsername($fname . " " . $mname . " " . $sname);
+            //                break;
+            //        }
+            //}
+            //} while ($violations->count() > 0);
+        }
+
         $user->save();
     }
     
+    protected function getSyncList(){
+        $syncList = [];
+        if (($fh = fopen("/tmp/sync_members.csv", "r")) != FALSE){
+             while(($data = fgetcsv($fh, 1000, ',')) !== FALSE){
+                 $syncList = array_merge($syncList, $data);
+             }
+        }
+        return $syncList;
+    }
 }    
             
 
