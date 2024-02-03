@@ -109,11 +109,15 @@ class RusaUserManager {
     
     protected function getSyncList(){
         $syncList = [];
-        if (($fh = fopen("/tmp/sync_members.csv", "r")) != FALSE){
-             while(($data = fgetcsv($fh, 1000, ',')) !== FALSE){
-                 $syncList = array_merge($syncList, $data);
-             }
-        }
+	$sync_file = "/tmp/sync_members.csv";
+	if(file_exists($sync_file)){
+
+            if (($fh = fopen($sync_file, "r")) != FALSE){
+                 while(($data = fgetcsv($fh, 1000, ',')) !== FALSE){
+                     $syncList = array_merge($syncList, $data);
+                 }
+	    }
+	}
         return $syncList;
     }
 }    
