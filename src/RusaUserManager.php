@@ -72,6 +72,7 @@ class RusaUserManager {
             if ($email !== $mdata->email) {
                 // Update email address
                 $user->setEmail($mdata->email);
+                $user->set('field_date_of_birth',  str_replace('/', '-', $mdata->birthdate));
                 $user->save();
                 $this->logger->notice('Updated email for %user', ['%user' => $uid]);
             }
@@ -85,7 +86,6 @@ class RusaUserManager {
             $this->logger->notice('Performing detailed sync for Rusa#  %user', ['%user' => $mid]);
             $user->set('field_first_name',     $mdata->fname);
             $user->set('field_last_name',      $mdata->sname);
-            $user->set('field_date_of_birth',  str_replace('/', '-', $mdata->birthdate));
 	    $fname = rtrim($mdata->fname);
 	    $lname = rtrim($mdata->sname);
 	    $user->setUsername($fname . " " . $lname);
