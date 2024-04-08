@@ -88,6 +88,8 @@ class RusaUserManager {
             $user->set('field_last_name',      $mdata->sname);
 	    $fname = rtrim($mdata->fname);
 	    $lname = rtrim($mdata->sname);
+            $display_name = $fname . " " . $lname;
+	    $user->set('field_display_name', $display_name);
 	    $user->setUsername($fname . " " . $lname);
 	    $tie = 1;
 	    //do {
