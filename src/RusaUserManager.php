@@ -72,7 +72,7 @@ class RusaUserManager {
     	// Set results link field
         $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid]);
         $link = 'https://' . $host . $url->toString();
-        $user->set('field_results_link', ['uri' => $link, 'title' => 'My results']);
+        $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
         $user->save();
         $this->logger->notice('Updated results link for %user', ['%user' => $mid]);
     
