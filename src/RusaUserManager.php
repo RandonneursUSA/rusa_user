@@ -70,7 +70,7 @@ class RusaUserManager {
         $host = \Drupal::request()->getHost();
     
     	// Set results link field
-        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid]);
+        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid,'sortby' => 'date']);
         $link = 'https://' . $host . $url->toString();
         $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
         $user->save();
