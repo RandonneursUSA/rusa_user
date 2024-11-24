@@ -13,6 +13,7 @@
 namespace drupal\rusa_user;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\rusa_api\RusaMembers;
 use Psr\Log\LoggerInterface;
