@@ -44,6 +44,7 @@ class RusaUserManager {
             $uids = $query
                 ->condition('status', '1')
                 ->condition('roles', 'rusa_member')
+                ->accessCheck(TRUE)
                 ->execute();
         
             // Step though each user
@@ -53,8 +54,28 @@ class RusaUserManager {
         }
         else {
             $this->syncData($uid);
+            $this->buildResultsLink($uid);
         }
     }
+    
+    
+    /**
+     * populate the My  Results field
+     *
+     */
+    protected function buildResultsLink($uid) {
+        $user   = $this->users->load($uid);
+        $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
+    
+    	// Set results link field
+        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid]);
+        $link = "https://rusa.org" . $url->toString();
+        $user->set('field_results_link', ['uri' => $link, 'title' => 'My results']);
+        $user->save();
+        $this->logger->notice('Updated results link for %user', ['%user' => $mid]);
+    
+    }
+    
     
     /**
      * Do the actual sync here
