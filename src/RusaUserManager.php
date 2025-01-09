@@ -13,6 +13,7 @@
 namespace drupal\rusa_user;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\rusa_api\RusaMembers;
 use Psr\Log\LoggerInterface;
@@ -44,6 +45,7 @@ class RusaUserManager {
             $uids = $query
                 ->condition('status', '1')
                 ->condition('roles', 'rusa_member')
+                ->accessCheck(TRUE)
                 ->execute();
         
             // Step though each user
@@ -53,8 +55,29 @@ class RusaUserManager {
         }
         else {
             $this->syncData($uid);
+            $this->buildResultsLink($uid);
         }
     }
+    
+    
+    /**
+     * populate the My  Results field
+     *
+     */
+    protected function buildResultsLink($uid) {
+        $user   = $this->users->load($uid);
+        $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
+        $host = \Drupal::request()->getHost();
+    
+    	// Set results link field
+        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid,'sortby' => 'date']);
+        $link = 'https://' . $host . $url->toString();
+        $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
+        $user->save();
+        $this->logger->notice('Updated results link for %user', ['%user' => $mid]);
+    
+    }
+    
     
     /**
      * Do the actual sync here

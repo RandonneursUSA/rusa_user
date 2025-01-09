@@ -32,3 +32,6 @@ rusa.membership:
   requirements:
     _access: 'TRUE'
 
+
+rusa_user.perl.results:
+  path: '/cgi-bin/resultsearch_PF.pl'
