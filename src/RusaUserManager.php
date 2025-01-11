@@ -109,42 +109,42 @@ class RusaUserManager {
             $this->logger->notice('Performing detailed sync for Rusa#  %user', ['%user' => $mid]);
             $user->set('field_first_name',     $mdata->fname);
             $user->set('field_last_name',      $mdata->sname);
-	    $fname = rtrim($mdata->fname);
-	    $lname = rtrim($mdata->sname);
+	        $fname = rtrim($mdata->fname);
+	        $lname = rtrim($mdata->sname);
             $display_name = $fname . " " . $lname;
-	    $user->set('field_display_name', $display_name);
-	    $user->setUsername($fname . " " . $lname);
-	    $tie = 1;
-	    //do {
-            //    $violations = $user->validate();
-            //    foreach ($violations as $violation) {
-            //        switch ($violation->getPropertyPath()) {
-            //            case 'name':
-            //                // Use middle name if it exists
-            //                $mname = empty($udata->mname) ? $tie++ : rtrim($mdata->mname);
-            //                $user->setUsername($fname . " " . $mname . " " . $sname);
-            //                break;
-            //        }
-            //}
-            //} while ($violations->count() > 0);
-        }
+	        $user->set('field_display_name', $display_name);
+	        $user->setUsername($fname . " " . $lname);
+	        $tie = 1;
+            //do {
+                //    $violations = $user->validate();
+                //    foreach ($violations as $violation) {
+                //        switch ($violation->getPropertyPath()) {
+                //            case 'name':
+                //                // Use middle name if it exists
+                //                $mname = empty($udata->mname) ? $tie++ : rtrim($mdata->mname);
+                //                $user->setUsername($fname . " " . $mname . " " . $sname);
+                //                break;
+                //        }
+                //}
+                //} while ($violations->count() > 0);
+            }
 
         $user->save();
     }
     
     protected function getSyncList(){
         $syncList = [];
-	$sync_file = "/tmp/sync_members.csv";
-	if(file_exists($sync_file)){
-
+	    $sync_file = "/tmp/sync_members.csv";
+	    if(file_exists($sync_file)){
             if (($fh = fopen($sync_file, "r")) != FALSE){
                  while(($data = fgetcsv($fh, 1000, ',')) !== FALSE){
                      $syncList = array_merge($syncList, $data);
                  }
+	        }
 	    }
-	}
         return $syncList;
     }
-}    
+    
+}   // End of class 
             
 
