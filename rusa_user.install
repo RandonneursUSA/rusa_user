@@ -1,46 +1,52 @@
 <?php
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\rusa_api\RusaMembers;
 
 /**
- * Update to add birthdate to members
+ * Implements hook_update_last_removed().
+ */
+function update_update_last_removed() {
+  return 8008;
+}
+
+/**
+ * Update to add results link to members
+ * Note: results_link is a link field that just needs to be populated
  *
  */
-function rusa_user_update_8008() {
+function rusa_user_update_10100() {
+    // Need the host name for the URL
+    $host = \Drupal::request()->getHost();
+    
+    // Instantiate our members class to get data from GDBM
+    $memobj = new RusaMembers(); 
 
-    //Get existing users with rusa_member role
-    $ids = \Drupal::entityQuery('user')
+   //Get existing users with rusa_member role
+    $query =  \Drupal::entityTypeManager()->getStorage('user')->getQuery();
+    $ids = $query
         ->condition('status', 1)
         ->condition('roles', 'rusa_member')
         ->accessCheck(TRUE)
         ->execute();
     $users = User::loadMultiple($ids);
-
-    // Instantiate our members class to get data from GDBM
-    $memobj = new RusaMembers(); 
-
+    
     $output = 'Start: ';
-    //Loop through users and check or set birtdate
+    //Loop through users set the results link
     foreach ($users as $user) {
-
-        // Check to see if birthdate is set
-        if (! $user->get('field_date_of_birth')[0]->value) {
-
-            // Get RUSA # from user
-            $mid = $user->get('field_rusa_member_id')[0]->value;
-
-            // Get birthdate from GDBM
-            $member = $memobj->getMember($mid);
-            $dob = str_replace('/', '-', $member->birthdate);
-
-            // Set birtdate
-            $user->set('field_date_of_birth', $dob);
-            $user->save();
-            $output .= $mid . ', '; 
-        }
-    }
+        $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
         
+    	// Create the Link using the URL from the route plus the mid
+        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid,'sortby' => 'date']);
+        $link = 'https://' . $host . $url->toString();
+        
+        // Set results link field
+        $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
+        $user->save();
+        $output .= $mid . ', '; 
+    }  
     return $output;
 }
 

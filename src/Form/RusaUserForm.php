@@ -8,6 +8,7 @@
 
 namespace Drupal\rusa_user\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger;
@@ -15,12 +16,15 @@ use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\user\Entity\Role;
 use Drupal\rusa_api\RusaMembers;
+use Psr\Log\LoggerInterface;
 
 class RusaUserForm extends ConfirmFormBase {
 
     protected $member;   // API Member object
     protected $settings; // From our config form
     protected $step = 1; // Keep track of multistep form
+    protected $host;     // Hostname for results link
+    protected $logger;   // Logger interface
     /**
      * Required
      *
@@ -34,10 +38,10 @@ class RusaUserForm extends ConfirmFormBase {
      * {@inheritdoc}
      *
      */
-    public function __construct() {
-        // Just get our settings
+    public function __construct(LoggerInterface $logger) {
         $this->settings = \Drupal::config('rusa_user.settings')->getRawData();
-        
+        $this->host = \Drupal::request()->getHost();
+        $this->logger = $logger;
     }   
 
    /**
@@ -253,9 +257,17 @@ class RusaUserForm extends ConfirmFormBase {
             $user->addRole('rusa_rba');
         }
 
+        // Build Link for results_link field
+        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $udata->mid,'sortby' => 'date']);
+        $link = 'https://' . $this->host . $url->toString();
+        
+        // Populate the resutls_link field
+        $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
+
         $user->activate();
         $user->save();
-
+        $this->logger->notice('Created Drupal account for %user', ['%user' => $uname]);
+        
         // Get a one time password reset link
         return user_pass_reset_url($user);
 
