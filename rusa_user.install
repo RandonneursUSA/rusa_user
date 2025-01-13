@@ -8,7 +8,7 @@ use Drupal\rusa_api\RusaMembers;
 /**
  * Implements hook_update_last_removed().
  */
-function update_update_last_removed() {
+function rusa_user_update_last_removed() {
   return 8008;
 }
 
