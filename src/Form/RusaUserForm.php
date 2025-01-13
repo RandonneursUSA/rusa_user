@@ -250,12 +250,15 @@ class RusaUserForm extends ConfirmFormBase {
         $club = $this->getClub($udata->clubacp);
         $user->set('field_club_affiliation', $club);
 
-        // Set roles
+        // Set roles for member and RBA
         $user->addRole('rusa_member');
-        if (in_array("Regional Brevet Administrator", $udata->titles)){
-            $user->addRole('rusa_rba');
+        if (!empty($udata->titles)) {
+            if (in_array("Regional Brevet Administrator", $udata->titles)){
+                $user->addRole('rusa_rba');
+            }
         }
-
+        
+        
         // Build Link for results_link field
         $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $udata->mid,'sortby' => 'date']);
         $link = 'https://' . $this->host . $url->toString();
