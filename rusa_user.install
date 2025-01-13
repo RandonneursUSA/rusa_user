@@ -15,7 +15,6 @@ function rusa_user_update_last_removed() {
 /**
  * Update to add results link to members
  * Note: results_link is a link field that just needs to be populated
- *
  */
 function rusa_user_update_10100() {
     // Need the host name for the URL
@@ -33,10 +32,11 @@ function rusa_user_update_10100() {
         ->execute();
     $users = User::loadMultiple($ids);
     
-    $output = 'Start: ';
+    $count = 0;
     //Loop through users set the results link
     foreach ($users as $user) {
-        $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
+        $count++;
+        $mid = $user->get('field_rusa_member_id')->getValue()[0]['value'];
         
     	// Create the Link using the URL from the route plus the mid
         $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid,'sortby' => 'date']);
@@ -45,8 +45,7 @@ function rusa_user_update_10100() {
         // Set results link field
         $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
         $user->save();
-        $output .= $mid . ', '; 
     }  
-    return $output;
+    return "Updated " . $count . "users results link field.\n";
 }
 
