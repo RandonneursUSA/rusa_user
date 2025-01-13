@@ -38,10 +38,9 @@ class RusaUserForm extends ConfirmFormBase {
      * {@inheritdoc}
      *
      */
-    public function __construct(LoggerInterface $logger) {
+    public function __construct() {
         $this->settings = \Drupal::config('rusa_user.settings')->getRawData();
         $this->host = \Drupal::request()->getHost();
-        $this->logger = $logger;
     }   
 
    /**
@@ -266,7 +265,7 @@ class RusaUserForm extends ConfirmFormBase {
 
         $user->activate();
         $user->save();
-        $this->logger->notice('Created Drupal account for %user', ['%user' => $uname]);
+        $this->logger('rusa_user')->notice('Created Drupal account for %user', ['%user' => $uname]);
         
         // Get a one time password reset link
         return user_pass_reset_url($user);

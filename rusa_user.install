@@ -46,6 +46,6 @@ function rusa_user_update_10100() {
         $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
         $user->save();
     }  
-    return "Updated " . $count . "users results link field.\n";
+    return "Updated " . $count . " users results link field.\n";
 }
 
