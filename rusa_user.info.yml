@@ -3,7 +3,7 @@ type: module
 description: Create Drupal accounts for RUSA members
 core_version_requirement: ^8 || ^9 || ^10
 package: RUSA
-version: 8.x-1.1.1
+version: 8.x-1.1.2
 dependencies:
     - fbl:fbl
     - pathauto:pathauto
