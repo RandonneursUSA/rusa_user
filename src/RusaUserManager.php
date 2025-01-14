@@ -82,7 +82,9 @@ class RusaUserManager {
         // Set membership expiration date
         $this->logger->notice('Setting expiration date for %user to %edate', ['%user' => $uid, '%edate' => $mdata->expdate]);
         $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
-        
+       
+       
+        // Code added by Man-Fai to sync users from a file
         $syncMe = $this->getSyncList();
         if(in_array($mid, $syncMe, false)){
             $this->logger->notice('Performing detailed sync for Rusa#  %user', ['%user' => $mid]);

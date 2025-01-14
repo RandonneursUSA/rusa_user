@@ -246,10 +246,6 @@ class RusaUserForm extends ConfirmFormBase {
         $user->set('field_rusa_member_id', $udata->mid);
         $user->set('field_date_of_birth',  str_replace('/', '-', $udata->birthdate));
 
-        // Set club affiliation
-        $club = $this->getClub($udata->clubacp);
-        $user->set('field_club_affiliation', $club);
-
         // Set roles for member and RBA
         $user->addRole('rusa_member');
         if (!empty($udata->titles)) {
@@ -274,24 +270,5 @@ class RusaUserForm extends ConfirmFormBase {
         return user_pass_reset_url($user);
 
     }
-    
-    /**
-     *
-     * Get a reference to a club
-     *
-     */
-     protected function getClub($acpcode) {
-     
-        $storage = \Drupal::service('entity_type.manager')->getStorage('node');
-        $query   = $storage->getQuery()
-        	->accessCheck(TRUE)
-            ->condition('type', 'club')
-            ->condition('field_club_acpcode', $acpcode);
-        $result  = $query->execute();
-     
-        if ($result) {
-            return $result;
-        }
-     }
 
 } //EoC
