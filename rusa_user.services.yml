@@ -3,12 +3,18 @@ services:
     class: Drupal\rusa_user\Routing\RouteSubscriber
     tags:
       - {name: event_subscriber }
+      
   rusa_user.manager:
     class: Drupal\rusa_user\RusaUserManager
     arguments: ['@logger.channel.rusa_user']
     tags:
       - {name: rusa_user.manager }
+      
   logger.channel.rusa_user:
     parent: logger.channel_base
     arguments: ['rusa_user']
+    
+  Drupal\rusa_user\Hook\RusaUserHooks:
+    class: Drupal\rusa_user\Hook\RusaUserHooks
+    autowire: true
       

@@ -9,7 +9,6 @@ use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\user\UserInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\rusa_user\RusaUserManager;
 

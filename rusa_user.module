@@ -6,7 +6,7 @@
  */
 
 use Drupal\Core\Hook\Attribute\LegacyHook;
-use Drupal\rusa_user\HookRusaUserHooks;
+use Drupal\rusa_user\Hook\RusaUserHooks;
 
         
 /**
@@ -36,7 +36,7 @@ function rusa_user_entity_presave(EntityInterface $entity) {
  */
 #[LegacyHook]
 function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
-    \Drupal::service(RusaUserHooks::class)->form_user_login_form_alter(&$form, FormStateInterface $form_state);
+    \Drupal::service(RusaUserHooks::class)->form_user_login_form_alter($form, $form_state);
 }
 
 /**
@@ -59,7 +59,7 @@ function rusa_user_user_login($account) {
  */
 #[LegacyHook]
 function rusa_user_mail($key, &$message, $params) {
-	\Drupal::service(RusaUserHooks::class)->mail($key, &$message, $params);
+	\Drupal::service(RusaUserHooks::class)->mail($key, $message, $params);
 }
 
 /**
@@ -69,7 +69,7 @@ function rusa_user_mail($key, &$message, $params) {
  */
 #[LegacyHook]
 function rusa_user_menu_links_discovered_alter(&$links) {
-    \Drupal::service(RusaUserHooks::class)->menu_links_discovered_alter(&$links);
+    \Drupal::service(RusaUserHooks::class)->menu_links_discovered_alter($links);
 }
 
 /**
