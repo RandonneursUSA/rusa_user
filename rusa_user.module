@@ -5,9 +5,12 @@
  * legacy hook support
  */
 
+use Drupal\user\UserInterface;
 use Drupal\Core\Hook\Attribute\LegacyHook;
 use Drupal\rusa_user\Hook\RusaUserHooks;
-
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
         
 /**
  * Implements hook_help().
@@ -46,9 +49,9 @@ function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_s
  *
  */
 #[LegacyHook]
-function rusa_user_user_login($account) { 
+function rusa_user_user_login(UserInterface $account) { 
     // Sync member data from GDBM
-    \Drupal::service(RusaUserHooks::class)->user_login($account->id());
+    \Drupal::service(RusaUserHooks::class)->user_login($account);
 }
 
 /**

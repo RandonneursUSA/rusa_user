@@ -76,7 +76,7 @@ class RusaUserHooks
 	 *
 	 */
 	#[Hook('user_login')]
-	function rusa_user_user_login($account) { 
+	function user_login(UserInterface $account) { 
 		// Sync member data from GDBM
 		\Drupal::service('rusa_user.manager')->syncMemberData($account->id());
 	}

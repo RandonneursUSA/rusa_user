@@ -10,10 +10,11 @@
  * ----------------------------------------------------------------------------------------
  */
 
-namespace drupal\rusa_user;
+namespace Drupal\rusa_user;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\user\UserInterface;
 use Drupal\user\Entity\User;
 use Drupal\rusa_api\RusaMembers;
 use Psr\Log\LoggerInterface;
@@ -31,33 +32,32 @@ class RusaUserManager {
     }
     
     
-    
-    
     /*
  	 * Provide a custom form validation for the login form
  	 * Check that the user's RUSA membership is not expired
  	 *
  	 */
-	public function user_login_form_validate(&$form, FormStateInterface $form_state) {
+	public static function user_login_form_validate(&$form, FormStateInterface $form_state) {
 		$name = $form_state->getValue('name');
 		$account = user_load_by_name($name); 
  
 		if (!empty($account)) {
 
 			// Get member id from account
-			$mid = $account->get("field_rusa_member_id")->getString();		
-
+			$mid    = $account->get("field_rusa_member_id")->getString();		
+			$memobj = new RusaMembers(['key' => 'mid', 'val' => $mid]);
+			
 			// If membersip is expired set an error on the login form
-			if ($this->members->isExpired($mid)) {
+			if ($memobj->isExpired($mid)) {
 				// Temporary disble membership requirement for the first week of the year
 				// Maybe add a date check here next year, but for now just modify the code
-				$mdata = $this->members->getMember($mid);
+				$mdata = $memobj->getMember($mid);
 				$expdate = $mdata->expdate;
 				\Drupal::Messenger()->addWarning(t('Your RUSA membership expired on %exp. Please renew your membership.', ['%exp' => $expdate]));			
 			}
 			// Check to see if membership will expire soon
 			else {
-				$mdata = $this->members->getMember($mid);
+				$mdata = $memobj->getMember($mid);
 				$expdate = $mdata->expdate;
 				if (strtotime($expdate) < strtotime("+2 month") ) {
 					\Drupal::Messenger()->addWarning(t('Your RUSA membership will expire on %exp', ['%exp' => $expdate]));
