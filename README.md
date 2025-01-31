@@ -28,17 +28,8 @@ rusa_user.routing.yml
     defines routes
 
 rusa_user.module
-    numerous old style hooks that might not be the best way to do it
-        function rusa_user_help($route_name, RouteMatchInterface $route_match) {
-        function rusa_user_entity_presave(EntityInterface $entity) {
-        function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
-        function rusa_user_user_login($account) {
-        function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_state) {
-        function rusa_user_mail($key, &$message, $params) {
-        function rusa_user_menu_links_discovered_alter(&$links) {
-        function rusa_user_cron() {
-    
-    
+    As of 1.2.0 all legacy hooks have been moved to src/Hooks/RusaUserHooks
+    with legacy support in rusa_user.module.
     
 @To-do
 These can be removed
