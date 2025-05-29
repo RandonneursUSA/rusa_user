@@ -12,6 +12,7 @@ namespace Drupal\rusa_user\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,12 +24,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class RusaUserController  extends ControllerBase {
 
     protected $currentUser;
+    protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(AccountProxy $currentUser) {
-      $this->currentUser = $currentUser;
+  public function __construct(AccountProxy $currentUser, EntityTypeManagerInterface $entityTypeManager) {
+      $this->currentUser       = $currentUser;
+      $this->entityTypeManager = $entityTypeManager;
   } 
 
 	/**
@@ -37,12 +40,13 @@ class RusaUserController  extends ControllerBase {
 	public static function create(ContainerInterface $container) {
 		return new static(
           $container->get('current_user'),
+          $container->get('entity_type_manager')
 		);
 	 }
 
 	 /**
 	  * Provide current user uid and mid via a JSON response
-	  * This doesn't do what I had intended and should be repurposed or deleted
+	  * This is used in cgi-bin/RUSA/Common.pm
 	  */
 	 public function getCurrentUser() {
         $uid  = $this->currentUser->id();
@@ -51,8 +55,31 @@ class RusaUserController  extends ControllerBase {
 
         return new JsonResponse([
             'data' => ['uid' => $uid, 'mid' => $mid],
-            'method' => 'GET',
         ]);
 	}
+
+
+	/**
+	 * Check to see if there is a user with given RUSA #
+	 *
+	 * @VAR $mid string containing RUSA#
+	 * 
+	 * @Return JSON response with Drupal uid or null
+	 *
+	 */
+	public function userExists($mid) {
+		$query = $this->entityTypeManage->getStorage('user')->getQuery();
+		$uids = $query
+			->condition('status', '1')
+			->condition('field_rusa_member_id', $mid)
+			->accessCheck(TRUE)
+			->execute();
+		
+		return new JsonResponse([
+			'data' => ['uid' => $uids[0]],
+		]);
+		
+	}
+
 
 } //EoC

@@ -6,6 +6,15 @@ rusa_user:
   requirements:
     _access: 'TRUE'
 
+rusa_user_exists:
+  path: '/rusa/user/{mid}'
+  defaults:
+    _title: 'Check to see if website account exists'
+    _controller: '\Drupal\rusa_user\Controller\RusaUserController::userExists'
+  requirements:
+    _access: 'TRUE'
+
+
 rusa_user.get_user:
   path: '/rusa/user/current-user'
   defaults:
