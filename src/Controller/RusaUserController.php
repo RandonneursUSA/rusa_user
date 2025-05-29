@@ -67,16 +67,16 @@ class RusaUserController  extends ControllerBase {
 	 * @Return JSON response with Drupal uid or null
 	 *
 	 */
-	public function userExists($mid) {
+     public function userExists($mid) {
 		$query = $this->entityTypeManager->getStorage('user')->getQuery();
 		$uids = $query
 			->condition('status', '1')
 			->condition('field_rusa_member_id', $mid)
 			->accessCheck(TRUE)
-			->execute();
-		
+            ->execute();
+
 		return new JsonResponse([
-			'data' => ['uid' => $uids[0]],
+			'data' => ['uid' => array_key_first($uids)],
 		]);
 		
 	}
