@@ -40,7 +40,7 @@ class RusaUserController  extends ControllerBase {
 	public static function create(ContainerInterface $container) {
 		return new static(
           $container->get('current_user'),
-          $container->get('entity_type_manager')
+          $container->get('entity_type.manager')
 		);
 	 }
 
