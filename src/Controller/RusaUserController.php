@@ -68,7 +68,7 @@ class RusaUserController  extends ControllerBase {
 	 *
 	 */
 	public function userExists($mid) {
-		$query = $this->entityTypeManage->getStorage('user')->getQuery();
+		$query = $this->entityTypeManager->getStorage('user')->getQuery();
 		$uids = $query
 			->condition('status', '1')
 			->condition('field_rusa_member_id', $mid)
