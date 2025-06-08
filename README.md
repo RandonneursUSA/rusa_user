@@ -14,7 +14,7 @@ src/Routing/RoutSubscriber
     alters the user.register route to point to our RusaUserForm
     
 src/RusaUserManager
-    syncronizes certqin data from GDBM to Drupal
+    synchronizes certain data from GDBM to Drupal
     called from rusa_user.module at login and cron
     
 src/Form/RusaUserSettingsForm
