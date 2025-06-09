@@ -42,3 +42,15 @@ rusa.membership:
 
 rusa_user.perl.results:
   path: '/cgi-bin/resultsearch_PF.pl'
+
+rusa_user.perl.configure_region:
+  path: '/cgi-bin/regionconfigure_GF.pl'
+
+rusa_user.perl.assign_routes:
+  path: '/cgi-bin/routeassign_GF.pl'
+
+rusa_user.perl.submit_calendar:
+  path: '/cgi-bin/submit_calendar.pl'
+
+rusa_user.perl.submit_results:
+  path: '/cgi-bin/resultsubmit_GF.pl'
