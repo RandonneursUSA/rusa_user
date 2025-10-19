@@ -1,9 +1,9 @@
 name: RUSA User 
 type: module
 description: Create Drupal accounts for RUSA members
-core_version_requirement: ^10.4 || 11
+core_version_requirement: ^9 || ^10 || ^11
 package: RUSA
-version: 1.2.0
+
 dependencies:
     - fbl:fbl
     - pathauto:pathauto
