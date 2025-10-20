@@ -6,6 +6,22 @@ rusa_user:
   requirements:
     _access: 'TRUE'
 
+rusa_user.exists:
+  path: '/rusa/user/check/{mid}'
+  defaults:
+    _title: 'Check to see if website account exists'
+    _controller: '\Drupal\rusa_user\Controller\RusaUserController::userExists'
+  requirements:
+    _access: 'TRUE'
+
+rusa_user.get_user:
+  path: '/rusa/user/current-user'
+  defaults:
+    _title: 'Get the currernt logged in user'
+    _controller: '\Drupal\rusa_user\Controller\RusaUserController::getCurrentUser'
+  requirements:
+    _access: 'TRUE'
+
 rusa_user.configuration:
   path: '/admin/config/people/rusa'
   defaults:
@@ -24,6 +40,17 @@ rusa.membership:
   requirements:
     _access: 'TRUE'
 
-
 rusa_user.perl.results:
   path: '/cgi-bin/resultsearch_PF.pl'
+
+rusa_user.perl.configure_region:
+  path: '/cgi-bin/regionconfigure_GF.pl'
+
+rusa_user.perl.assign_routes:
+  path: '/cgi-bin/routeassign_GF.pl'
+
+rusa_user.perl.submit_calendar:
+  path: '/cgi-bin/submit_calendar.pl'
+
+rusa_user.perl.submit_results:
+  path: '/cgi-bin/resultsubmit_GF.pl'

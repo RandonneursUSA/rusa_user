@@ -33,9 +33,13 @@ function rusa_user_entity_presave(EntityInterface $entity) {
 }
 
 /* 
+=======
+
+/**
  * Implements hook_form_FORM_ID_alter
  *
  * Add a custom login validation to check for expired RUSA membership
+ * Redirect to an approved path if requested.
  */
 #[LegacyHook]
 function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
@@ -53,6 +57,72 @@ function rusa_user_user_login(UserInterface $account) {
     // Sync member data from GDBM
     \Drupal::service(RusaUserHooks::class)->user_login($account);
 }
+
+/*
+ * Do the validation here.
+ * Note: maybe move this into a MemberValidate class later
+ *
+ */
+function _rusa_user_user_login_form_validate(&$form, FormStateInterface $form_state) {
+    $name = $form_state->getValue('name');
+    $account = user_load_by_name($name); 
+ 
+    if (!empty($account)) {
+
+        // Get member id from account
+        $mid = $account->get("field_rusa_member_id")->getString();
+
+        // Get member data from the RUSA database
+        $memobj  = new RusaMembers(['key' => 'mid', 'val' => $mid]);
+
+        // If membership is expired set an error on the login form
+        if ($memobj->isExpired($mid)) {
+            // Temporary disable membership requirement for the first week of the year
+            // Maybe add a date check here next year, but for now just modify the code
+            $mdata = $memobj->getMember($mid);
+            $expdate = $mdata->expdate;
+            \Drupal::Messenger()->addWarning(t('Your RUSA membership expired on %exp. Please renew your membership.', ['%exp' => $expdate]));
+            
+            /*            
+            $form_state->setErrorByName('name', t('Your RUSA membership is expired. Please renew your membership on the ' .
+                Link::createFromRoute('membership page', 'rusa.membership')
+                ->toString()
+                ->getGeneratedLink()));
+            */
+        }
+        // Check to see if membership will expire soon
+        else {
+            $mdata = $memobj->getMember($mid);
+            $expdate = $mdata->expdate;
+            if (strtotime($expdate) < strtotime("+2 month") ) {
+                \Drupal::Messenger()->addWarning(t('Your RUSA membership will expire on %exp', ['%exp' => $expdate]));
+            }
+        }
+       
+    }
+}
+
+/**
+ * Valid post-login redirect paths.
+ */
+const REDIRECT_PATHS = [
+    "configure_region" => "rusa_user.perl.configure_region",
+    "assign_routes"    => "rusa_user.perl.assign_routes",
+    "submit_calendar"  => "rusa_user.perl.submit_calendar",
+    "submit_results"   => "rusa_user.perl.submit_results",
+];
+
+/**
+ * Custom submit handler for login form.
+ */
+function _rusa_user_user_login_form_submit($form, FormStateInterface $form_state) {
+    // Set redirect according to URL parameter.
+    $redirect_token = \Drupal::request()->query->get('r');
+    if (array_key_exists($redirect_token, REDIRECT_PATHS)) {
+        $form_state->setRedirect(REDIRECT_PATHS[$redirect_token]);
+    }
+}
+
 
 /**
  * hook_mail
