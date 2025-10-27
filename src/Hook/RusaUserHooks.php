@@ -67,6 +67,7 @@ class RusaUserHooks
 	function form_user_login_form_alter(&$form, FormStateInterface $form_state) 
 	{
 		$form['#validate'][] = 'Drupal\rusa_user\RusaUserManager::user_login_form_validate';
+		$form['#submit'][] = 'Drupal\rusa_user\RusaUserManager::rusa_user_user_login_form_submit';		
 	}
 	
 	/**

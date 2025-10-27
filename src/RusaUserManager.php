@@ -67,7 +67,27 @@ class RusaUserManager {
 		}
 	}
 
+ 
+/**
+ * Custom submit handler for login form.
+ */
+function rusa_user_user_login_form_submit($form, FormStateInterface $form_state) {
     
+ 	//Valid post-login redirect paths.
+	$redirect_paths = [
+		"configure_region" => "rusa_user.perl.configure_region",
+		"assign_routes"    => "rusa_user.perl.assign_routes",
+		"submit_calendar"  => "rusa_user.perl.submit_calendar",
+		"submit_results"   => "rusa_user.perl.submit_results",
+	];
+
+    // Set redirect according to URL parameter.    
+    $redirect_token = \Drupal::request()->query->get('r');
+    if (array_key_exists($redirect_token, $redirect_paths)) {
+        $form_state->setRedirect($redirect_paths[$redirect_token]);
+    }
+}
+
     
     
     /**
