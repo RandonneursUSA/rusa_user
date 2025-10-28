@@ -16,5 +16,6 @@ services:
     
   Drupal\rusa_user\Hook\RusaUserHooks:
     class: Drupal\rusa_user\Hook\RusaUserHooks
+    arguments: ['@rusa_user.manager']
     autowire: true
       
