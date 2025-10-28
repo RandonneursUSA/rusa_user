@@ -71,7 +71,7 @@ class RusaUserManager {
 /**
  * Custom submit handler for login form.
  */
-function rusa_user_user_login_form_submit($form, FormStateInterface $form_state) {
+function user_login_form_submit($form, FormStateInterface $form_state) {
     
  	//Valid post-login redirect paths.
 	$redirect_paths = [

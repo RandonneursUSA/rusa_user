@@ -19,6 +19,8 @@ use Drupal\rusa_user\RusaUserManager;
 class RusaUserHooks
 {
 
+	public function __construct(protected RusaUserManager $user_manager){}
+
     /**
      * Implements hook_help().
      *
@@ -66,8 +68,8 @@ class RusaUserHooks
 	#[Hook('form_user_login_form_alter')]
 	function form_user_login_form_alter(&$form, FormStateInterface $form_state) 
 	{
-		$form['#validate'][] = 'Drupal\rusa_user\RusaUserManager::user_login_form_validate';
-		$form['#submit'][] = 'Drupal\rusa_user\RusaUserManager::rusa_user_user_login_form_submit';		
+		$form['#validate'][] = $this->user_manager->user_login_form_validate;
+		$form['#submit'][]   = $this->user_manager->user_login_form_submit;		
 	}
 	
 	/**
