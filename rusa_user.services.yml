@@ -16,6 +16,11 @@ services:
     
   Drupal\rusa_user\Hook\RusaUserHooks:
     class: Drupal\rusa_user\Hook\RusaUserHooks
-    arguments: ['@rusa_user.manager']
     autowire: true
+    
+  rusa_user.login_form_subscriber:
+    class: Drupal\rusa_user\EventSubscriber\UserLoginFormSubscriber
+    arguments: ['@rusa_user.manager'] # Inject the service
+    tags:
+      - { name: event_subscriber }  
       

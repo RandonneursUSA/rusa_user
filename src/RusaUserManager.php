@@ -37,7 +37,7 @@ class RusaUserManager {
  	 * Check that the user's RUSA membership is not expired
  	 *
  	 */
-	public static function user_login_form_validate(&$form, FormStateInterface $form_state) {
+	public static function userLoginFormValidate(&$form, FormStateInterface $form_state) {
 		$name = $form_state->getValue('name');
 		$account = user_load_by_name($name); 
  
@@ -71,7 +71,7 @@ class RusaUserManager {
 /**
  * Custom submit handler for login form.
  */
-function user_login_form_submit($form, FormStateInterface $form_state) {
+function userLoginFormSubmit($form, FormStateInterface $form_state) {
     
  	//Valid post-login redirect paths.
 	$redirect_paths = [
