@@ -35,7 +35,6 @@ class UserLoginFormSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents() {
     return [
       // The event name for all form builds.
-      'kernel.request' => ['onKernelRequest', 0], // Example to show the structure
       'user_login_form' => 'onFormBuild', // Use the Form ID as the event name
     ];
   }
