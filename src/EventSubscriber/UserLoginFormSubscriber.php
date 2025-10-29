@@ -22,13 +22,26 @@ use Drupal\rusa_user\RusaUserManager;
 /**
  * Subscribes to the user login form event.
  */
-class UserLoginFormSubscriber extends FormEventSubscriberBase {
+class UserLoginFormSubscriber implements EventSubscriberInterface {
 
 
   /**
    * {@inheritdoc}
    */
   public function __construct(protected RusaUserManager $rusaUserService){}
+  
+  /**
+   * {@inheritdoc}
+   * NOTE: This method is required by EventSubscriberInterface.
+   */
+  public static function getSubscribedEvents() {
+    return [
+      // The event name for all form builds.
+      'kernel.request' => ['onKernelRequest', 0], // Example to show the structure
+      'user_login_form' => 'onFormBuild', // Use the Form ID as the event name
+    ];
+  }
+  
   
   /**
    * {@inheritdoc}
