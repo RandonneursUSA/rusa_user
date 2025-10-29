@@ -20,7 +20,7 @@ services:
     
   rusa_user.login_form_subscriber:
     class: Drupal\rusa_user\EventSubscriber\UserLoginFormSubscriber
-    arguments: ['@rusa_user.manager'] # Inject the service
+    arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
     tags:
       - { name: event_subscriber }  
       

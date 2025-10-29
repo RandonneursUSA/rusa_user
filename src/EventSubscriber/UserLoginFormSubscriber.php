@@ -15,6 +15,7 @@ namespace Drupal\rusa_user\EventSubscriber;
 
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Psr\Log\LoggerInterface;
 use Drupal\rusa_user\RusaUserManager;
 
 /**
@@ -26,7 +27,7 @@ class UserLoginFormSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct(protected RusaUserManager $rusaUserService){}
+  public function __construct(protected RusaUserManager $rusaUserService, protected LoggerInterface $logger){}
   
   /**
    * {@inheritdoc}
@@ -59,9 +60,10 @@ class UserLoginFormSubscriber implements EventSubscriberInterface {
    * The current state of the form.
    */
   public function onFormBuild(array &$form, FormStateInterface $form_state) {
-    // Prepend your custom submit handler to the existing ones.
-    // NOTE: This uses the service instance's method as a callable array.
-    
+    // Prepend our custom handlers to the existing ones.
+
+   $this->logger->notice("Entered onFormBuild");  
+
     // Custom Validate
     array_unshift($form['actions']['submit']['#submit'], [
       $this->rusaUserService, 'userLoginFormValidate'
