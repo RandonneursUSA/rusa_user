@@ -24,12 +24,6 @@ use Drupal\rusa_user\RusaUserManager;
  */
 class UserLoginFormSubscriber extends FormEventSubscriberBase {
 
-  /**
-   * The custom submit service.
-   *
-   * @var \Drupal\your_module\Service\LoginSubmitService
-   */
-  protected $rusaUserService;
 
   /**
    * {@inheritdoc}
