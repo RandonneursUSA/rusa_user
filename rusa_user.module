@@ -37,11 +37,13 @@ function rusa_user_entity_presave(EntityInterface $entity) {
  *
  * Add a custom login validation to check for expired RUSA membership
  * Redirect to an approved path if requested.
- */
+ 
 #[LegacyHook]
 function rusa_user_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
     \Drupal::service(RusaUserHooks::class)->form_user_login_form_alter($form, $form_state);
 }
+*/
+
 
 /**
  * Implements hook_user_login
