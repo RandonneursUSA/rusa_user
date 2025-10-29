@@ -27,7 +27,9 @@ class UserLoginFormSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public function __construct(protected RusaUserManager $rusaUserService, protected LoggerInterface $logger){}
+  public function __construct(protected RusaUserManager $rusaUserService, protected LoggerInterface $logger){
+  	$this->logger->notice("Instantiated event subscriber");  
+  }
   
   /**
    * {@inheritdoc}
