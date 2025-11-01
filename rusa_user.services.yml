@@ -16,6 +16,7 @@ services:
     
   Drupal\rusa_user\Hook\RusaUserHooks:
     class: Drupal\rusa_user\Hook\RusaUserHooks
+    arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
     autowire: true
     
 #  rusa_user.login_form_subscriber:
