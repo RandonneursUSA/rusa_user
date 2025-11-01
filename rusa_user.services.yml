@@ -14,13 +14,13 @@ services:
     parent: logger.channel_base
     arguments: ['rusa_user']
     
-  Drupal\rusa_user\Hook\RusaUserHooks:
-    class: Drupal\rusa_user\Hook\RusaUserHooks
-    autowire: true
+#  Drupal\rusa_user\Hook\RusaUserHooks:
+#    class: Drupal\rusa_user\Hook\RusaUserHooks
+#    autowire: true
     
-  rusa_user.login_form_subscriber:
-    class: Drupal\rusa_user\EventSubscriber\UserLoginFormSubscriber
-    arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
-    tags:
-      - { name: event_subscriber }  
+#  rusa_user.login_form_subscriber:
+#    class: Drupal\rusa_user\EventSubscriber\UserLoginFormSubscriber
+#    arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
+#    tags:
+#      - { name: event_subscriber }  
       
