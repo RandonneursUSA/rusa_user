@@ -127,7 +127,7 @@ function userLoginFormSubmit($form, FormStateInterface $form_state) {
         $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
         $email  = $user->getEmail();
         $mdata  = $this->members->getMember($mid);
-        
+        dpm($user);
         $this->logger->notice('User email is %email', ['%email' => $email]);
         
         // Skip if we're using Plus addressing        
