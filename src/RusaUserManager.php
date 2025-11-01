@@ -128,9 +128,10 @@ function userLoginFormSubmit($form, FormStateInterface $form_state) {
         $email  = $user->getEmail();
         $mdata  = $this->members->getMember($mid);
         
-        // Skip if we're using Plus addressing
-        $plus = "+";
-        if (str_contains($email, $plus)) {
+        $this->logger->notice('User email is %email', ['%email' => $email])
+        
+        // Skip if we're using Plus addressing        
+        if (str_contains($email, "+")) {
             // Check to see if email is different
             if ($email !== $mdata->email) {
                 // Update email address
