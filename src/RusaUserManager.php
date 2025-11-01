@@ -129,12 +129,8 @@ function userLoginFormSubmit($form, FormStateInterface $form_state) {
         $mdata  = $this->members->getMember($mid);
         
         // Skip if we're using Plus addressing
-        /* @To-do 
-         This is broken
-         Deprecated function: strpos(): Passing null to parameter #1 
-    	 Need to cast '+' as a string
-        */        
-        if (! strpos($email, (string) '+')) {
+        $plus = "+";
+        if (! strpos($email, $plus)) {
             // Check to see if email is different
             if ($email !== $mdata->email) {
                 // Update email address
