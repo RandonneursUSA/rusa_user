@@ -130,7 +130,7 @@ function userLoginFormSubmit($form, FormStateInterface $form_state) {
         
         // Skip if we're using Plus addressing
         $plus = "+";
-        if (! strpos($email, $plus)) {
+        if (str_contains($email, $plus)) {
             // Check to see if email is different
             if ($email !== $mdata->email) {
                 // Update email address
