@@ -72,6 +72,7 @@ class RusaUserManager {
  * Custom submit handler for login form.
  */
 function userLoginFormSubmit($form, FormStateInterface $form_state) {
+    $this->logger->notice('Entered userLoginFormSubmit');
     
  	//Valid post-login redirect paths.
 	$redirect_paths = [
@@ -79,10 +80,13 @@ function userLoginFormSubmit($form, FormStateInterface $form_state) {
 		"assign_routes"    => "rusa_user.perl.assign_routes",
 		"submit_calendar"  => "rusa_user.perl.submit_calendar",
 		"submit_results"   => "rusa_user.perl.submit_results",
+		"test"             => "rusa_rba.rba_form",
 	];
 
     // Set redirect according to URL parameter.    
     $redirect_token = \Drupal::request()->query->get('r');
+    $this->logger->notice("Redirect token: %token", ['%token' => $redirect_token]);
+    
     if (array_key_exists($redirect_token, $redirect_paths)) {
         $form_state->setRedirect($redirect_paths[$redirect_token]);
     }
@@ -127,8 +131,6 @@ function userLoginFormSubmit($form, FormStateInterface $form_state) {
         $mid    = $user->get('field_rusa_member_id')->getValue()[0]['value'];
         $email  = $user->getEmail();
         $mdata  = $this->members->getMember($mid);
-        dpm($user);
-        $this->logger->notice('User email is %email', ['%email' => $email]);
         
         // Skip if we're using Plus addressing        
         if (str_contains($email, "+")) {

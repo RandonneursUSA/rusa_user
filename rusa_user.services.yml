@@ -3,21 +3,33 @@ services:
     class: Drupal\rusa_user\Routing\RouteSubscriber
     tags:
       - {name: event_subscriber }
-      
+  
   rusa_user.manager:
     class: Drupal\rusa_user\RusaUserManager
     arguments: ['@logger.channel.rusa_user']
     tags:
       - {name: rusa_user.manager }
-      
+  
+  Drupal\rusa_user\RusaUserManager:
+    alias: rusa_user.manager
+  
   logger.channel.rusa_user:
     parent: logger.channel_base
     arguments: ['rusa_user']
+  
+  Psr\Log\LoggerInterface:
+    alias: logger.channel.rusa_user
     
-  Drupal\rusa_user\Hook\RusaUserHooks:
-    class: Drupal\rusa_user\Hook\RusaUserHooks
-    arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
-    autowire: true
+      
+#  rusa_user.rusauserhooks:
+#     class: Drupal\rusa_user\Hook\RusaUserHooks
+#     arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
+#     autowire: true
+#     
+#   rusa_user.loginformalter:
+#     class: Drupal\rusa_user\Hook\UserLoginFormAlter
+#     arguments: ['@rusa_user.manager', '@logger.channel.rusa_user']
+#     autowire: true    
     
 #  rusa_user.login_form_subscriber:
 #    class: Drupal\rusa_user\EventSubscriber\UserLoginFormSubscriber
