@@ -55,6 +55,11 @@ rusa_user.perl.assign_routes:
   requirements:
     _access: 'TRUE'
 
+rusa_user.perl.submit_elevation:
+  path: '/cgi-bin/submit_elevation_GF.pl'
+  requirements:
+    _access: 'TRUE'
+
 rusa_user.perl.submit_calendar:
   path: '/cgi-bin/submit_calendar.pl'
   requirements:

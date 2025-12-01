@@ -125,6 +125,7 @@ const REDIRECT_PATHS = [
     "configure_region" => "rusa_user.perl.configure_region",
     "assign_routes"    => "rusa_user.perl.assign_routes",
     "submit_calendar"  => "rusa_user.perl.submit_calendar",
+    "submit_elevation" => "rusa_user.perl.submit_elevation",
     "submit_results"   => "rusa_user.perl.submit_results",
 ];
 
