@@ -1,51 +1,8 @@
 <?php
-
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Url;
-use Drupal\user\Entity\User;
-use Drupal\rusa_api\RusaMembers;
-
 /**
  * Implements hook_update_last_removed().
  */
 function rusa_user_update_last_removed() {
-  return 8008;
-}
-
-/**
- * Update to add results link to members
- * Note: results_link is a link field that just needs to be populated
- */
-function rusa_user_update_10100() {
-    // Need the host name for the URL
-    $host = \Drupal::request()->getHost();
-    
-    // Instantiate our members class to get data from GDBM
-    $memobj = new RusaMembers(); 
-
-   //Get existing users with rusa_member role
-    $query =  \Drupal::entityTypeManager()->getStorage('user')->getQuery();
-    $ids = $query
-        ->condition('status', 1)
-        ->condition('roles', 'rusa_member')
-        ->accessCheck(TRUE)
-        ->execute();
-    $users = User::loadMultiple($ids);
-    
-    $count = 0;
-    //Loop through users set the results link
-    foreach ($users as $user) {
-        $count++;
-        $mid = $user->get('field_rusa_member_id')->getValue()[0]['value'];
-        
-    	// Create the Link using the URL from the route plus the mid
-        $url = Url::fromRoute('rusa_user.perl.results', ['mid' => $mid,'sortby' => 'date']);
-        $link = 'https://' . $host . $url->toString();
-        
-        // Set results link field
-        $user->set('field_results_link', ['uri' => $link, 'title' => 'My Results']);
-        $user->save();
-    }  
-    return "Updated " . $count . " users results link field.\n";
+  return 10100;
 }
 
