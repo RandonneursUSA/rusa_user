@@ -51,7 +51,14 @@ class RusaUserController extends ControllerBase {
   public function getCurrentUser() {
     $uid = $this->currentUser->id();
     $user = User::load($uid);
-    $mid = $user->get('field_rusa_member_id')->getValue()[0]['value'];
+
+	// Allow for users that don't have a RUSA Member ID set.  One valid case is when
+	// this is called without a user being logged in.
+    $member_id_field = $user->get('field_rusa_member_id');
+	$mid = "";
+    if (!(empty($member_id_field) || empty($member_id_field->getValue()))) {
+	  $mid = $member_id_field->getValue()[0]['value'];
+	}
 
     return new JsonResponse([
       'data' => ['uid' => $uid, 'mid' => $mid],
