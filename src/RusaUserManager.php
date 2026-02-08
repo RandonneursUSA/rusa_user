@@ -64,14 +64,23 @@ class RusaUserManager {
    */
   protected function syncData($uid) {
     $user = $this->users->load($uid);
-    $mid = $user->get('field_rusa_member_id')->getValue()[0]['value'];
+    $member_id_field = $user->get('field_rusa_member_id');
+    if (empty($member_id_field) || empty($member_id_field->getValue())) {
+      $this->logger->notice('syncData:  User %user does not have a RUSA Member ID set', ['%user' => $uid]);
+      return;
+    }
+    $mid = $member_id_field->getValue()[0]['value'];
     $email = $user->getEmail();
     $mdata = $this->members->getMember($mid);
+    if(empty($mdata)) {
+      $this->logger->notice('syncData:  No member data found for RUSA Member ID %mid', ['%mid' => $mid]);
+      return;
+    }
 
     // Skip if we're using Plus addressing
-    if (!strpos($email, '+')) {
+    if (!isset($email) || strpos($email, '+') === FALSE) {
       // Check to see if email is different
-      if ($email !== $mdata->email) {
+      if (isset($mdata->email) && $email !== $mdata->email) {
         // Update email address
         $user->setEmail($mdata->email);
         $user->set('field_date_of_birth', str_replace('/', '-', $mdata->birthdate));
@@ -82,7 +91,6 @@ class RusaUserManager {
     // Set membership expiration date
     $this->logger->notice('Setting expiration date for %user to %edate', ['%user' => $uid, '%edate' => $mdata->expdate]);
     $user->set('field_member_expiration_date', str_replace('/', '-', $mdata->expdate));
-
 
     // Code added by Man-Fai to sync users from a file
     $syncMe = $this->getSyncList();
